@@ -92,19 +92,6 @@ contract = new web3.eth.Contract([
 				"type": "uint256"
 			}
 		],
-		"stateMutability": "pure",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getOwner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
 		"stateMutability": "view",
 		"type": "function"
 	},
@@ -176,4 +163,4 @@ contract = new web3.eth.Contract([
 		"stateMutability": "view",
 		"type": "function"
 	}
-],"0xD93791BBBEfD8900b05472AFD29964f01d95d9AB");
+],"0x32e239D6cD5e7C60702A272e7f04e4Caf2D35f74");
