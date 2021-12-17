@@ -4,6 +4,7 @@ new Vue({
         return {
             web3: '',
             contract: '',
+            default_address:'',
             accounts: [],
             candidates: [],
 
@@ -196,32 +197,31 @@ new Vue({
                 "stateMutability": "view",
                 "type": "function"
             }
-        ],"0x311Acb4f256736e6736948004951704321D1A1Fc");
-        this.get_all_accounts();
-
-
-
+        ],"0xED397c99D8960E6ec8B361d342bb0330E5cf1fd3");
+        this.get_all_candidates();
     },
     methods: {
-        get_all_accounts: function () {
-
+        get_all_candidates: function () {
             this.contract.methods.getCandidates().call().then(result => {
                 result.forEach(element => {
                     this.candidates.push(element[0])
                 });
             });
 
-            console.log(this.candidates);
-
+        },
+        get_all_accounts: function () {
 
             this.web3.eth.getAccounts().then(result => {
                 result.forEach(element => {
                     this.accounts.push(element)
                 });
             });
+
+            console.log(this.accounts[0]);
+
         },
         add_candidate: function () {
-         this.contract.methods.addCandidate(this.name).send({from: "0xE42dCcf32C6285cc3d419c0151502520a229477e"});
+         this.contract.methods.addCandidate(this.name).send({from: this.default_address});
             this.candidates.push(this.name);
         },
 
