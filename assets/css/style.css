@@ -271,7 +271,7 @@ nav > .container > input {
 
 
 .input {
-	width: 35%;
+	width: 75%;
     padding: .2em 1em;
     margin: .5em 0;
     border: 1px solid var(--border);

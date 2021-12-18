@@ -4,13 +4,16 @@ new Vue({
         return {
             web3: '',
             contract: '',
-            default_address:'',
+            default_address: '',
             accounts: [],
+            voters: [],
             candidates: [],
 
-            name: ''
+            name: '',
+            voter_address: '',
+            current_vote: null,
 
-
+            errors: [],
         }
     },
 
@@ -197,8 +200,9 @@ new Vue({
                 "stateMutability": "view",
                 "type": "function"
             }
-        ],"0xED397c99D8960E6ec8B361d342bb0330E5cf1fd3");
+        ], "0x1c7F1674e9bf20A6cfC6D30a36Fa2B4782bA476c");
         this.get_all_candidates();
+        this.get_all_voters();
     },
     methods: {
         get_all_candidates: function () {
@@ -209,6 +213,16 @@ new Vue({
             });
 
         },
+
+        get_all_voters: function () {
+            this.contract.methods.getCandidates().call().then(result => {
+                result.forEach(element => {
+                    this.voters.push(element[0])
+                });
+            });
+
+        },
+
         get_all_accounts: function () {
 
             this.web3.eth.getAccounts().then(result => {
@@ -220,9 +234,22 @@ new Vue({
             console.log(this.accounts[0]);
 
         },
+
         add_candidate: function () {
-         this.contract.methods.addCandidate(this.name).send({from: this.default_address});
+            this.contract.methods.addCandidate(this.name).send({from: this.default_address});
             this.candidates.push(this.name);
+        },
+
+        authorize: function () {
+            this.contract.methods.authorize(this.voter_address).send({from: this.default_address});
+        },
+
+        vote: function () {
+            if (!this.voter_address) {
+                this.errors.push('Plz enter your address');
+            }
+            this.contract.methods.vote(this.current_vote).send({from: this.voter_address});
+            this.voters.push(this.voter_address);
         },
 
     },

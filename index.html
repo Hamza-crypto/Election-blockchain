@@ -26,21 +26,28 @@
         </nav>
     </header>
 
+    <p v-if="errors.length">
+        <b>Please correct the following error(s):</b>
+        <ul>
+            <li v-for="error in errors">{{ error }}</li>
+        </ul>
+    </p>
+
 
     <div class="row body">
         <div class="col-8 block1 ">
-            <div class="">
+            <div>
                 <input class="input" type="text" v-model="name" value="" placeholder="Your Name">
                 <button class="btn text-dark" @click="add_candidate">Add Candidate</button>
             </div>
 
-            <div class="">
-                <input class="input" type="text" name="" value="" placeholder="Your Number">
-                <button class="btn text-dark">Authorize</button>
+            <div>
+                <input class="input" required type="text" v-model="voter_address" placeholder="Your person address">
+                <button class="btn text-dark" @click="authorize">Authorize</button>
             </div>
-            <div class="">
-                <input class="input" type="text" name="" value="" placeholder="Enter Candidate Number">
-                <button class="btn text-dark">Vote</button>
+            <div>
+                <input class="input" type="text" v-model="current_vote" placeholder="Enter candidate number e.g. 1">
+                <button class="btn text-dark" @click="vote">Vote</button>
             </div>
 
 
@@ -66,11 +73,24 @@
             <div>
                 <button class="btn text-dark" @click="get_all_accounts">Get All Accounts</button>
             </div>
-            <table class="table" id="tbl_accounts">
+            <table class="table">
                 <tr v-for="item in this.accounts">
                     <td> {{item }}</td>
                 </tr>
             </table>
+        </div>
+
+        <div class="col-6 block2">
+            <div>
+
+                <table class="table">
+                    <button class="btn text-dark">All Voters</button>
+                    <tr v-for="item in this.voters">
+                        <td> {{item }}</td>
+                    </tr>
+                </table>
+            </div>
+
         </div>
     </div>
 </div>
