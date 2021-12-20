@@ -200,15 +200,17 @@ new Vue({
                 "stateMutability": "view",
                 "type": "function"
             }
-        ], "0x1c7F1674e9bf20A6cfC6D30a36Fa2B4782bA476c");
+        ], "0x8464fF0C982D8B9CC9c3C9143dA6b2E5CBD7f4D1");
         this.get_all_candidates();
         this.get_all_voters();
     },
     methods: {
         get_all_candidates: function () {
+
             this.contract.methods.getCandidates().call().then(result => {
                 result.forEach(element => {
-                    this.candidates.push(element[0])
+                    let candidate = {name: element[0], voteCount: element[1]};
+                    this.candidates.push(candidate);
                 });
             });
 
@@ -224,14 +226,13 @@ new Vue({
         },
 
         get_all_accounts: function () {
-
-            this.web3.eth.getAccounts().then(result => {
-                result.forEach(element => {
-                    this.accounts.push(element)
+            if(this.accounts.length == 0){
+                this.web3.eth.getAccounts().then(result => {
+                    result.forEach(element => {
+                        this.accounts.push(element)
+                    });
                 });
-            });
-
-            console.log(this.accounts[0]);
+            }
 
         },
 
@@ -248,6 +249,8 @@ new Vue({
             if (!this.voter_address) {
                 this.errors.push('Plz enter your address');
             }
+
+            console.log(this.voter_address);
             this.contract.methods.vote(this.current_vote).send({from: this.voter_address});
             this.voters.push(this.voter_address);
         },

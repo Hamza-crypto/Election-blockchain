@@ -1,100 +1,155 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="assets/css/bootstrap.css">
-    
-    <script src='node_modules//web3.js-browser/build/web3.js'></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <script src="assets/js/vue.js"></script>
-<!--    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>-->
+    <title>Blockchain</title>
 
-    <link rel="stylesheet" href="assets/css/style.css">
-    <title>Document</title>
+    <link rel="shortcut icon" href="assets/img/favicon.ico">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <link class="js-stylesheet" href="assets/css/style.css" rel="stylesheet">
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">-->
 </head>
-<body>
 
-<div class="container" id="app">
-    <header id="header">
-        <nav>
-            <div class="container">
-                <a href="" class="nav-brand text-dark">Voting App</a>
-                <input class="input" type="text" v-model="default_address" placeholder="Default Address">
+<body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-behavior="sticky">
+
+
+<div class="wrapper">
+
+    aside
+
+    <div class="main" >
+
+        <nav class="navbar navbar-expand navbar-light navbar-bg">
+            <a class="sidebar-toggle">
+                <i class="hamburger align-self-center"></i>
+            </a>
+
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav navbar-align">
+                    <li class="nav-item dropdown">
+                        <a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-toggle="dropdown">
+                            <i class="align-middle" data-feather="settings"></i>
+                        </a>
+
+                        <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown" aria-expanded="false">
+
+
+
+                            <span class="text-dark"> Hamza </span>
+                        </a>
+
+                    </li>
+                </ul>
             </div>
         </nav>
-    </header>
-
-    <p v-if="errors.length">
-        <b>Please correct the following error(s):</b>
-        <ul>
-            <li v-for="error in errors">{{ error }}</li>
-        </ul>
-    </p>
 
 
-    <div class="row body">
-        <div class="col-8 block1 ">
-            <div>
-                <input class="input" type="text" v-model="name" value="" placeholder="Your Name">
-                <button class="btn text-dark" @click="add_candidate">Add Candidate</button>
+        <main class="content">
+            <div class="container-fluid p-0">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <table id="gateway-table" class="table table-striped" style="width:100%">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Location</th>
+                                                <th>Created at</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                            </thead>
+
+
+                                            <tr>
+                                                <td>gfhf </td>
+
+
+                                                <td>kjjghjhg</td> <td>gfhf </td>
+
+
+                                                <td>kjjghjhg</td>
+
+
+                                            </tr>
+
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <table class="table table-striped" style="width:100%">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Location</th>
+                                                <th>Created at</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                            </thead>
+
+
+                                            <tr>
+                                                <td>gfhf </td>
+
+
+                                                <td>kjjghjhg</td> <td>gfhf </td>
+
+
+                                                <td>kjjghjhg</td>
+
+
+                                            </tr>
+
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
             </div>
+        </main>
 
-            <div>
-                <input class="input" required type="text" v-model="voter_address" placeholder="Your person address">
-                <button class="btn text-dark" @click="authorize">Authorize</button>
-            </div>
-            <div>
-                <input class="input" type="text" v-model="current_vote" placeholder="Enter candidate number e.g. 1">
-                <button class="btn text-dark" @click="vote">Vote</button>
-            </div>
-
-
-        </div>
-        <div class="col-4 block2">
-            <table class="table">
-                <tr>
-                    <td><h1>Candidates</h1> </td>
-                </tr>
-                <tr v-for="item in this.candidates">
-                    <td> {{item }}</td>
-                </tr>
-
-            </table>
-        </div>
-
-    </div>
-
-    <div class="row body">
-
-
-        <div class="col-6 block2">
-            <div>
-                <button class="btn text-dark" @click="get_all_accounts">Get All Accounts</button>
-            </div>
-            <table class="table">
-                <tr v-for="item in this.accounts">
-                    <td> {{item }}</td>
-                </tr>
-            </table>
-        </div>
-
-        <div class="col-6 block2">
-            <div>
-
-                <table class="table">
-                    <button class="btn text-dark">All Voters</button>
-                    <tr v-for="item in this.voters">
-                        <td> {{item }}</td>
-                    </tr>
-                </table>
-            </div>
-
-        </div>
+       footer
     </div>
 </div>
 
-<script src="assets/js/app.js"></script>
+
+<script src="/assets/js/app.js"></script>
+
+
+<script>
+
+</script>
+
+<!--<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.2/sweetalert2.all.min.js"></script>-->
+
+
+
 </body>
+
 </html>

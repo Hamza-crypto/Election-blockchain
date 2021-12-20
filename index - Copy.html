@@ -1,0 +1,104 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+    
+    <script src='node_modules//web3.js-browser/build/web3.js'></script>
+
+    <script src="assets/js/vue.js"></script>
+<!--    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>-->
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Document</title>
+</head>
+<body>
+
+<div class="container" id="app">
+    <header id="header">
+        <nav>
+            <div class="container">
+                <a href="" class="nav-brand text-dark">Voting App</a>
+                <input class="input" type="text" v-model="default_address" placeholder="Default Address">
+            </div>
+        </nav>
+    </header>
+
+    <p v-if="errors.length">
+        <b>Please correct the following error(s):</b>
+        <ul>
+            <li v-for="error in errors">{{ error }}</li>
+        </ul>
+    </p>
+
+
+    <div class="row body">
+        <div class="col-8 block1 ">
+            <div>
+                <input class="input" type="text" v-model="name" value="" placeholder="Your Name">
+                <button class="btn text-dark" @click="add_candidate">Add Candidate</button>
+            </div>
+
+            <div>
+                <input class="input" required type="text" v-model="voter_address" placeholder="Your person address">
+                <button class="btn text-dark" @click="authorize">Authorize</button>
+            </div>
+            <div>
+                <input class="input" type="text" v-model="current_vote" placeholder="Enter candidate number e.g. 1">
+                <button class="btn text-dark" @click="vote">Vote</button>
+            </div>
+
+
+        </div>
+        <div class="col-4 block2">
+            <table class="table">
+                <tr>
+                    <td><h1>Candidates</h1> </td>
+                </tr>
+
+                <tr>
+                    <td>Number </td> <td>Name </td>  <td>Total Votes </td>
+                </tr>
+                <tr v-for="(item, index) in this.candidates">
+                    <td> {{index }}</td>  <td> {{item.name }}</td>  <td> {{item.voteCount }}</td>
+                </tr>
+
+            </table>
+        </div>
+
+    </div>
+
+    <div class="row body">
+
+
+        <div class="col-6 block2">
+            <div>
+                <button class="btn text-dark" @click="get_all_accounts">Get All Accounts</button>
+            </div>
+            <table class="table">
+                <tr v-for="item in this.accounts">
+                    <td> {{item }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="col-6 block2">
+            <div>
+
+                <table class="table">
+                    <button class="btn text-dark">All Voters</button>
+                    <tr v-for="item in this.voters">
+                        <td> {{item }}</td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>
