@@ -12,6 +12,7 @@ new Vue({
             name: '',
             voter_address: '',
             current_vote: null,
+            num_of_voters: 0,
 
             errors: [],
         }
@@ -134,6 +135,19 @@ new Vue({
             },
             {
                 "inputs": [],
+                "name": "getNumOfVoters",
+                "outputs": [
+                    {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [],
                 "name": "owner",
                 "outputs": [
                     {
@@ -174,6 +188,25 @@ new Vue({
             {
                 "inputs": [
                     {
+                        "internalType": "uint256",
+                        "name": "",
+                        "type": "uint256"
+                    }
+                ],
+                "name": "voter_list",
+                "outputs": [
+                    {
+                        "internalType": "address",
+                        "name": "",
+                        "type": "address"
+                    }
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
                         "internalType": "address",
                         "name": "",
                         "type": "address"
@@ -200,7 +233,8 @@ new Vue({
                 "stateMutability": "view",
                 "type": "function"
             }
-        ], "0x8464fF0C982D8B9CC9c3C9143dA6b2E5CBD7f4D1");
+        ], "0x40e80a45f75C601746470950846939951BD5E049");
+        this.get_all_accounts();
         this.get_all_candidates();
         this.get_all_voters();
     },
@@ -209,6 +243,7 @@ new Vue({
 
             this.contract.methods.getCandidates().call().then(result => {
                 result.forEach(element => {
+
                     let candidate = {name: element[0], voteCount: element[1]};
                     this.candidates.push(candidate);
                 });
@@ -217,42 +252,81 @@ new Vue({
         },
 
         get_all_voters: function () {
-            this.contract.methods.getCandidates().call().then(result => {
-                result.forEach(element => {
-                    this.voters.push(element[0])
-                });
+
+            this.contract.methods.getNumOfVoters().call().then(voter_count => {
+                this.num_of_voters = Number(voter_count);
+
+                for (let i = 0; i < (this.num_of_voters); i++) {
+
+                    this.contract.methods.voter_list(i).call().then(voter_address => {
+
+                        this.contract.methods.voters(voter_address).call().then(voter => {
+
+                            const address = {
+                                address: voter_address
+                            };
+                            this.voters.push(Object.assign(voter, address));
+
+                        });
+
+                    });
+                }
             });
+
 
         },
 
         get_all_accounts: function () {
-            if(this.accounts.length == 0){
+            if (this.accounts.length == 0) {
                 this.web3.eth.getAccounts().then(result => {
                     result.forEach(element => {
-                        this.accounts.push(element)
+                        this.accounts.push(element);
                     });
+
+                    this.default_address = this.accounts[0];
                 });
             }
+
 
         },
 
         add_candidate: function () {
             this.contract.methods.addCandidate(this.name).send({from: this.default_address});
-            this.candidates.push(this.name);
+            console.log(this.name);
+
+            let candidate = {name: this.name, voteCount: 0};
+            this.candidates.push(candidate);
+
         },
 
         authorize: function () {
+            console.log(this.default_address,this.voter_address );
             this.contract.methods.authorize(this.voter_address).send({from: this.default_address});
         },
 
         vote: function () {
-            if (!this.voter_address) {
-                this.errors.push('Plz enter your address');
-            }
 
-            console.log(this.voter_address);
-            this.contract.methods.vote(this.current_vote).send({from: this.voter_address});
-            this.voters.push(this.voter_address);
+            this.current_vote = parseInt(this.current_vote - 1);
+
+
+            console.log(this.default_address,this.current_vote );
+            this.contract.methods.vote( this.current_vote ).send({from: this.voter_address})
+                .then(function(res) {
+                    alert(res);
+                })
+                .catch(error => {
+                    alert(error);
+                });
+
+            const vote = {
+                address: this.voter_address,
+                vote: this.current_vote
+            };
+
+            console.log(vote);
+            this.voters.push(vote);
+
+
         },
 
     },

@@ -7,11 +7,12 @@
 
     <title>Blockchain</title>
 
-    <link rel="shortcut icon" href="assets/img/favicon.ico">
-
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <link class="js-stylesheet" href="assets/css/style.css" rel="stylesheet">
-<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">-->
+    <script src='node_modules//web3.js-browser/build/web3.js'></script>
+
+    <script src="assets/js/vue.js"></script>
+    <!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">-->
 </head>
 
 <body data-theme="default" data-layout="fluid" data-sidebar-position="left" data-sidebar-behavior="sticky">
@@ -19,20 +20,27 @@
 
 <div class="wrapper">
 
-    <div class="main" >
+    <div class="main" id="app">
 
         <nav class="navbar navbar-expand navbar-light navbar-bg">
             Voting App
             <div class="navbar-collapse collapse">
 
                 <ul class="navbar-nav navbar-align">
-                    <div class="form-group">
-                        <input
-                                class="form-control form-control-lg"
-                                type="text"
-                                name="pickup_date"
-                                placeholder="Enter default address" />
-                    </div>
+                    <li>
+                        <h3> Default Address &nbsp;</h3>
+                    </li>
+
+                    <li>
+                        <div class="form-group">
+                            <input
+                                    class="form-control form-control"
+                                    type="text"
+                                    v-model="default_address"
+                                    placeholder="Enter default address"/>
+                        </div>
+                    </li>
+
 
                 </ul>
 
@@ -42,34 +50,103 @@
 
         <main class="content">
             <div class="container-fluid p-0">
+
+
                 <div class="row">
-                    <div class="col-8">
+                    <div class="col-3">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+
+                                    <div class="card-body">
+
+                                        <div class="input-group">
+                                            <input type="text" v-model="name" class="form-control-lg"
+                                                   placeholder="Enter candidate name">
+                                            <p>&nbsp;</p>
+                                            <button type="button" class="btn btn-primary" @click="add_candidate">Add
+                                                Candidate
+                                            </button>
+                                        </div>
+                                        <p>&nbsp;</p>
+
+
+                                        <div class="input-group">
+                                            <input type="text" v-model="voter_address" class="form-control-lg"
+                                                   placeholder="Enter voter address">
+                                            <p>&nbsp;</p>
+                                            <button type="button" class="btn btn-primary" @click="authorize">
+                                                Authorize voter
+                                            </button>
+                                        </div>
+                                        <p>&nbsp;</p>
+
+                                        <div class="input-group">
+                                            <input type="text" v-model="current_vote" class="form-control-lg"
+                                                   placeholder="Enter candidate number">
+                                            <p>&nbsp;</p>
+                                            <button type="button" class="btn btn-primary" @click="vote">
+                                                &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Vote &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                &nbsp;
+                                            </button>
+                                        </div>
+                                        <p>&nbsp;</p>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-5">
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-body">
-
-                                        <table id="gateway-table" class="table table-striped" style="width:100%">
+                                        <caption>Registered Voters</caption>
+                                        <table class="table table-striped" style="width:100%">
                                             <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Location</th>
-                                                <th>Created at</th>
-                                                <th>Actions</th>
+                                                <th>Address</th>
+                                                <th>Voted for</th>
                                             </tr>
                                             </thead>
 
+                                            <tr v-for="(item, index) in this.voters">
+                                                <td> {{ (index + 1) }}</td>
+                                                <td> {{ item.address }}</td>
+                                                <td >
+                                                    {{ (Number(item.vote) + 1) }}</td>
+                                            </tr>
 
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <caption>Candidates</caption>
+                                        <table class="table table-striped" style="width:100%">
+                                            <thead>
                                             <tr>
-                                                <td>gfhf </td>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>Votes</th>
+                                            </tr>
+                                            </thead>
 
-
-                                                <td>kjjghjhg</td> <td>gfhf </td>
-
-
-                                                <td>kjjghjhg</td>
-
-
+                                            <tr v-for="(item, index) in this.candidates">
+                                                <td> {{ (index + 1) }}</td>
+                                                <td> {{ item.name }}</td>
+                                                <td> {{ item.voteCount }}</td>
                                             </tr>
 
 
@@ -80,33 +157,27 @@
                         </div>
                     </div>
 
-                    <div class="col-4">
+                </div>
+
+
+                <div class="row">
+                    <div class="col-3">
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-body">
-
+                                        <caption>All Accounts</caption>
                                         <table class="table table-striped" style="width:100%">
                                             <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Location</th>
-                                                <th>Created at</th>
-                                                <th>Actions</th>
+                                                <th>Address</th>
                                             </tr>
                                             </thead>
 
-
-                                            <tr>
-                                                <td>gfhf </td>
-
-
-                                                <td>kjjghjhg</td> <td>gfhf </td>
-
-
-                                                <td>kjjghjhg</td>
-
-
+                                            <tr v-for="(item, index) in this.accounts">
+                                                <td> {{ (index + 1) }}</td>
+                                                <td> {{ item }}</td>
                                             </tr>
 
 
@@ -121,22 +192,11 @@
             </div>
         </main>
 
-       footer
     </div>
 </div>
 
 
-<script src="/assets/js/app.js"></script>
-
-
-<script>
-
-</script>
-
-<!--<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>-->
-<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.2/sweetalert2.all.min.js"></script>-->
-
-
+<script src="assets/js/app.js"></script>
 
 </body>
 
