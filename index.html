@@ -117,8 +117,13 @@
                                             <tr v-for="(item, index) in this.voters">
                                                 <td> {{ (index + 1) }}</td>
                                                 <td> {{ item.address }}</td>
-                                                <td >
-                                                    {{ (Number(item.vote) + 1) }}</td>
+                                                <td> {{ (item.voted) }}
+                                                <td v-if="Number(item.vote) == 0">
+
+                                                    Not voted yet
+                                                    </td>
+                                                <td v-else> {{ (Number(item.vote) + 1) }}
+                                                </td>
                                             </tr>
 
 

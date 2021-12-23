@@ -233,7 +233,7 @@ new Vue({
                 "stateMutability": "view",
                 "type": "function"
             }
-        ], "0x40e80a45f75C601746470950846939951BD5E049");
+        ], "0xf647BBeE0CBDf556256d6d167d4E9B5350d40a50");
         this.get_all_accounts();
         this.get_all_candidates();
         this.get_all_voters();
@@ -300,18 +300,22 @@ new Vue({
         },
 
         authorize: function () {
-            console.log(this.default_address,this.voter_address );
-            this.contract.methods.authorize(this.voter_address).send({from: this.default_address});
+
+            var a = this.voter_address;
+            var b = this.default_address;
+
+            this.contract.methods.authorize(a).send({from: b});
+
         },
 
         vote: function () {
 
             this.current_vote = parseInt(this.current_vote - 1);
 
-
+            console.log(typeof this.current_vote);
             console.log(this.default_address,this.current_vote );
             this.contract.methods.vote( this.current_vote ).send({from: this.voter_address})
-                .then(function(res) {
+                .then(res =>  {
                     alert(res);
                 })
                 .catch(error => {
