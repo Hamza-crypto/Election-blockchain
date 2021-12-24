@@ -110,20 +110,20 @@
                                             <tr>
                                                 <th>ID</th>
                                                 <th>Address</th>
-                                                <th>Voted for</th>
                                             </tr>
                                             </thead>
 
                                             <tr v-for="(item, index) in this.voters">
                                                 <td> {{ (index + 1) }}</td>
                                                 <td> {{ item.address }}</td>
-                                                <td> {{ (item.voted) }}
-                                                <td v-if="Number(item.vote) == 0">
 
-                                                    Not voted yet
-                                                    </td>
-                                                <td v-else> {{ (Number(item.vote) + 1) }}
-                                                </td>
+<!--                                                <td> {{ (item.voted) }}-->
+<!--                                                <td v-if="Number(item.vote) == 0">-->
+
+<!--                                                    Not voted yet-->
+<!--                                                    </td>-->
+<!--                                                <td v-else> {{ (Number(item.vote) + 1) }}-->
+<!--                                                </td>-->
                                             </tr>
 
 
@@ -133,6 +133,7 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="col-4">
                         <div class="row">
                             <div class="col-12">
