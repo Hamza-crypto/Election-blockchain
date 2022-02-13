@@ -9,8 +9,8 @@ contract Election {
     string public electionName;
 
 
-      constructor(string memory _appName) {                  
-        electionName = _appName;    
+      constructor(string memory _appName) {
+        electionName = _appName;
         owner = msg.sender;
     }
 
@@ -31,10 +31,12 @@ contract Election {
         _;
     }
 
-    
+
     mapping(address => Voter) public voters;
-    
+
     Candidate[] public candidates;
+    address[] public voter_list;
+
     uint public totalVotes;
 
 
@@ -45,26 +47,52 @@ contract Election {
 
     }
 
+
+
+
+    //  function getVoters() public view returns(string[] memory ) {
+
+    //       address[] memory result;
+
+    //      for(uint i=0; i<voter_list.length; i++){
+    //             result.append(voter_list[0]);
+    //     }
+    //     return result;
+
+    // }
+
     function getNumCandidates() public view returns(uint) {
         return candidates.length;
     }
 
+       function getNumOfVoters() public view returns(uint) {
+        return voter_list.length;
+    }
+
+    function getCandidates() public view returns(Candidate[] memory) {
+        return candidates;
+    }
+
+
+
     function authorize(address _personAddress) ownerOnly public {
-        voters[_personAddress].authorized = true; 
+          voter_list.push(_personAddress);
+          voters[_personAddress].authorized = true;
+
     }
 
     function vote(uint _voteIndex) public {
-        require(!voters[msg.sender].voted, "You already voted"); 
-        require(voters[msg.sender].authorized, "First you should authorize"); 
+        // require(!voters[msg.sender].voted, "You already voted");
+        // require(voters[msg.sender].authorized, "First you should authorize");
 
-        voters[msg.sender].vote = _voteIndex; 
-        voters[msg.sender].voted = true; 
+        voters[msg.sender].vote = _voteIndex;
+        voters[msg.sender].voted = true;
 
         candidates[_voteIndex].voteCount += 1;
         totalVotes += 1;
-        
+
     }
 
 
-   
+
 }

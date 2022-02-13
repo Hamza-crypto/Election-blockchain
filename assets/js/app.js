@@ -233,7 +233,7 @@ new Vue({
                 "stateMutability": "view",
                 "type": "function"
             }
-        ], "0xf647BBeE0CBDf556256d6d167d4E9B5350d40a50");
+        ], '0x3907e5A8f01B2A33e1802160F98fa4025B94196a');
         this.get_all_accounts();
         this.get_all_candidates();
         this.get_all_voters();
